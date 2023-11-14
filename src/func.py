@@ -3,17 +3,18 @@ import json
 import os
 
 
-url_var = 'https://api.hh.ru/vacancies/'
-# url_var = 'https://api.superjob.ru/2.0/vacancies/'
+# url_var = 'https://api.hh.ru/vacancies/'
+url_var = 'https://api.superjob.ru/2.0/vacancies/'
 
 # param = {"Host": "api.superjob.ru",
 #         "X-Api-App-Id": os.getenv('SJ_API_KEY'),
 #         "Content-Type": "application/x-www-form-urlencoded"}
 
-response = requests.get(url_var, headers={"User-Agent": "python-requests/2.31.0"}, params={"page": 0, "per_page": 2}) #headers={"User-Agent": "MyApp/1.0"}
-# response = requests.get(url_var, headheaders={"User-Agent":={"X-Api-App-Id": os.getenv('SJ_API_KEY')})
+# response = requests.get(url_var, headers={"User-Agent": "python-requests/2.31.0"}, params={"page": 0, "per_page": 2}) #headers={"User-Agent": "MyApp/1.0"}
 
-print(response.text)
+response = requests.get(url_var, headers={"X-Api-App-Id": os.getenv('SJ_API_KEY')})
+
+# print(response.text)
 
 # data = response.content.decode()
 
@@ -32,7 +33,12 @@ print(response.text)
 
 # print(len(json_data))
 # print(response.text)
-print(response.request.headers)
+out_dict = response.request.headers
+print(out_dict)
+# out_str = ", ".join([key + ": " + out_dict[key] for key in out_dict])
+out_str = ", ".join([f"{key}: {out_dict[key]}" for key in out_dict])
+print(out_str)
+# print(response.request.headers)
 
 # response = requests.get('https://httpbin.org/basic-auth/foo/bar')
 # print(response.status_code)  # 401

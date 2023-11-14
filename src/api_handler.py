@@ -20,11 +20,11 @@ class SuperJobAPI(APIHandler):
         self.api_key = os.getenv('SJ_API_KEY')
         self.params = kwargs
         self.head = {"X-Api-App-Id": self.api_key}
-        self.resp = requests.get(self.host, headers=self.head, params=self.params).json()
-        # print(self.resp)
+        self.resp = requests.get(self.host, headers=self.head, params=self.params)
 
-    def __str__(self):
-        return self.api_key
+    def __repr__(self):
+        out_dict = self.resp.request.headers
+        return ", ".join([f"{key}: {out_dict[key]}" for key in out_dict])
 
     def api_handler(self):
         pass
@@ -36,14 +36,17 @@ class HHruAPI(APIHandler):
     def __init__(self, **kwargs):
         self.host = 'https://api.hh.ru/vacancies/'
         self.params = kwargs
-        self.resp = requests.get(self.host, params=self.params).json()
-        # print(self.resp)
+        self.resp = requests.get(self.host, params=self.params)
+
+    def __repr__(self):
+        out_dict = self.resp.request.headers
+        return ", ".join([f"{key}: {out_dict[key]}" for key in out_dict])
 
     def api_handler(self):
         pass
 
 
 #####################################################################################################################
-# obj_1 = SuperJobAPI()
-obj_2 = HHruAPI()
-# print(obj_1)
+obj_1 = SuperJobAPI()
+# obj_2 = HHruAPI()
+print(obj_1)
