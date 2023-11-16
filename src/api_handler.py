@@ -21,8 +21,9 @@ class SuperJobAPI(APIHandler):
         self.params = kwargs
         self.head = {"X-Api-App-Id": self.api_key}
         self.resp = requests.get(self.host, headers=self.head, params=self.params)
+        self.resp_json = self.resp.json()["objects"][0]["profession"]
 
-    def __repr__(self):
+    def __str__(self):
         out_dict = self.resp.request.headers
         return ", ".join([f"{key}: {out_dict[key]}" for key in out_dict])
 
@@ -38,7 +39,7 @@ class HHruAPI(APIHandler):
         self.params = kwargs
         self.resp = requests.get(self.host, params=self.params)
 
-    def __repr__(self):
+    def __str__(self):
         out_dict = self.resp.request.headers
         return ", ".join([f"{key}: {out_dict[key]}" for key in out_dict])
 
@@ -47,6 +48,6 @@ class HHruAPI(APIHandler):
 
 
 #####################################################################################################################
-obj_1 = SuperJobAPI()
+obj_1 = SuperJobAPI(params={"keyword": "Python"})
 # obj_2 = HHruAPI()
-print(obj_1)
+print(obj_1.resp)
