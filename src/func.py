@@ -2,8 +2,8 @@ import requests
 import json
 import os
 
-country_id = 5
-url_var = 'https://api.hh.ru/areas/'  #'https://api.hh.ru/vacancies/'
+country_id = "5"
+url_var = 'https://api.hh.ru/vacancies/' # 'https://api.hh.ru/areas/'
 # url_var = 'https://api.superjob.ru/2.0/vacancies/'
 #
 # param = {"Host": "api.superjob.ru",
@@ -21,8 +21,8 @@ response = requests.get(url_var, params={"area": country_id})
 # data = response.content.decode()
 
 json_data = response.json()
-# for i in json_data:
-#     print(i["areas"][0])
+for i in json_data["items"]:
+    print(i)
 # print(json_data["items"][10])
 
 # print(type(json_data))
@@ -75,6 +75,7 @@ def get_areas():
                               k['name'],
                               k['areas'][i]['id'],
                               k['areas'][i]['name']])
+    # print(js_obj)
     return areas
 
 
