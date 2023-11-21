@@ -76,8 +76,8 @@ class HHruAPI(APIHandler):
         out_list_vacancy = []
         params = {
             "per_page": 100,
-            "area": ["113", "97"],
-            "text": vacancy_name,
+            "area": ["113"],
+            "text": f"name:{vacancy_name}",
                  }
         for num_page in range(20):
             params["page"] = num_page
@@ -92,7 +92,7 @@ class HHruAPI(APIHandler):
 obj_2 = HHruAPI()
 print(obj_2)
 
-lst_vacancy = obj_2.api_handler("Python Developer")
+lst_vacancy = obj_2.api_handler("Python")
 print(len(lst_vacancy))
 # for i in lst_vacancy:
 #     print(i["profession"])
@@ -101,4 +101,5 @@ print(len(lst_vacancy))
 
 for i in lst_vacancy:
     print(i["name"])
-print(lst_vacancy[10])
+    # print(i)
+# print(lst_vacancy[10])
