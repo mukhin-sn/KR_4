@@ -60,7 +60,7 @@ class SuperJobAPI(APIHandler):
 class HHruAPI(APIHandler):
     """Класс для работы с API сайта hh.ru"""
 
-    def __init__(self,):
+    def __init__(self):
         self.host = 'https://api.hh.ru/vacancies/'
         self.resp = requests.get(self.host).request.headers
 
@@ -76,8 +76,8 @@ class HHruAPI(APIHandler):
         out_list_vacancy = []
         params = {
             "per_page": 100,
-            "area": ["113", "97"],
-            "text": vacancy_name,
+            "area": ["113"],
+            "text": f"name:{vacancy_name}",
                  }
         for num_page in range(20):
             params["page"] = num_page
@@ -89,16 +89,17 @@ class HHruAPI(APIHandler):
 # obj_1 = SuperJobAPI()
 # print(obj_1)
 
-obj_2 = HHruAPI()
-print(obj_2)
-
-lst_vacancy = obj_2.api_handler("Python Developer")
-print(len(lst_vacancy))
+# obj_2 = HHruAPI()
+# print(obj_2)
+#
+# lst_vacancy = obj_2.api_handler("Python")
+# print(len(lst_vacancy))
 # for i in lst_vacancy:
 #     print(i["profession"])
 # print(lst_vacancy[5])
 # print(len(lst_vacancy["objects"]))
 
-for i in lst_vacancy:
-    print(i["name"])
-print(lst_vacancy[10])
+# for i in lst_vacancy:
+#     print(i["name"])
+    # print(i)
+# print(lst_vacancy[10])

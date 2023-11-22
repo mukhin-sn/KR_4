@@ -80,9 +80,9 @@ class JSONSaver(WorkingWithFiles):
 
 
 #################################################################################################################
-json_data = JSONSaver("json_data.json")
-data_dic_1 = {"1": "A", "2": "B"}
-data_dic_2 = {"3": "C", "4": "D"}
-json_data.add_vacancy(data_dic_2)
-json_data.del_vacancy("2")
+# json_data = JSONSaver("json_data.json")
+# data_dic_1 = {"1": "A", "2": "B"}
+# data_dic_2 = {"3": "C", "4": "D"}
+# json_data.add_vacancy(data_dic_2)
+# json_data.del_vacancy("2")
 # print(json_data.get_vacancy("4"))
