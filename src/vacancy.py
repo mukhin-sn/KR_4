@@ -16,6 +16,6 @@ class Vacancy:
                 f"{self.description}\n")
 
 ###################################################################################################################
-obj_vacancy = Vacancy("Python", "http://qoogle.com", "150 000", "Хороший сайт")
-print(obj_vacancy)
-print(repr(obj_vacancy))
+# obj_vacancy = Vacancy("Python", "http://qoogle.com", "150 000", "Хороший сайт")
+# print(obj_vacancy)
+# print(repr(obj_vacancy))

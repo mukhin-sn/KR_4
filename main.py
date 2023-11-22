@@ -3,7 +3,7 @@ from src.api_handler import *
 from src.file_handler import *
 
 """
-Программа поиска вакансий на сайтах 'superjob.ru' и 'hh.ru'
+Программа поиска вакансий на сайтах 'superjob.ru' и/или 'hh.ru'
 с возможностью сортировки:
  - по региону;
  - по зарплате;
@@ -33,12 +33,19 @@ if __name__ == '__main__':
             break
         print("Такого варианта нет. Введите существующий вариант")
         continue
-
+    if answer == "4":
+        quit("Выход из программы")
     out_open_ended_question("Запрос по какой вакансии Вы хотите сформировать?")
     vacancy_name = input_answer()
     if answer == "1":
         hh_vacancy = hh_api.api_handler(vacancy_name)
-        print(hh_vacancy)
+        # print(hh_vacancy)
+    elif answer == "2":
+        sj_vacancy = sj_api.api_handler(vacancy_name)
+    else:
+        hh_vacancy = hh_api.api_handler(vacancy_name)
+        sj_vacancy = sj_api.api_handler(vacancy_name)
+
 
 
     # print(check_answer(answer, platforms))

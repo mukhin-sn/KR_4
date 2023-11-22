@@ -33,6 +33,7 @@ def out_open_ended_question(question: str):
     print("Введите запрос")
     print('=' * 50)
 
+
 def input_answer():
     answer = input("-> ")
     return answer
@@ -63,7 +64,7 @@ def question_to_user(question: str, *arg_question: list, flag=True) -> str:
     if flag:
         for i in range(len(arg_question[0])):
             print(f"{i + 1} - {arg_question[0][i]}")
-            num_answer_lst.append(str(i+1))
+            num_answer_lst.append(str(i + 1))
         print("Введите номер выбранного варианта:")
     answer = input("-> ")
     if not flag:
@@ -75,9 +76,6 @@ def question_to_user(question: str, *arg_question: list, flag=True) -> str:
     else:
         # print("Такого варианта нет.\nПродолжить?")
         return ""
-
-
-
 
 # country_id = "113"
 # url_var = 'https://api.hh.ru/vacancies/' # 'https://api.hh.ru/areas/'
