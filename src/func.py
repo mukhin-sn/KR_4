@@ -7,6 +7,49 @@ def user_interaction():
     return None
 
 
+def out_question(question: str, answers: dict):
+    """
+    Метод вывода вопроса пользователю
+    :param question: вопрос пользователю
+    :param answers: словарь с вариантами ответов
+    """
+    print(question)
+    print('=' * 50)
+    for key in answers:
+        print(f"{key} - {answers[key]}")
+    print('=' * 50)
+    print("Введите номер выбранного варианта")
+    print('=' * 50)
+
+
+def out_open_ended_question(question: str):
+    """
+    Метод вывода вопроса пользователю без вариантов ответа
+    :param question:
+    :return:
+    """
+    print(question)
+    print('=' * 50)
+    print("Введите запрос")
+    print('=' * 50)
+
+def input_answer():
+    answer = input("-> ")
+    return answer
+
+
+def check_answer(answer: str, answer_options: dict) -> bool:
+    """
+    Метод проверки ответа пользователя
+    :param answer: ответ пользователя
+    :param answer_options: допустимые варианты ответов
+    :return: True, если 'answer' есть в 'answer_options'
+    """
+    if answer in answer_options:
+        return True
+    return False
+
+
 def question_to_user(question: str, *arg_question: list, flag=True) -> str:
     """
     Метод вывода вопроса пользователю
