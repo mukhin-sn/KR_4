@@ -24,9 +24,8 @@ def out_question(question: str, answers: dict):
 
 def out_open_ended_question(question: str):
     """
-    Метод вывода вопроса пользователю без вариантов ответа
-    :param question:
-    :return:
+    Метод вывода вопроса пользователю без вариантов ответов
+    :param question: вопрос пользователю
     """
     print(question)
     print('=' * 50)
@@ -57,7 +56,7 @@ def question_to_user(question: str, *arg_question: list, flag=True) -> str:
     :param question: текст вопроса
     :param arg_question: список предлагаемых вариантов ответа
     :param flag: режим взаимодействи с пользователем после вывода вопроса
-    :return:
+    :return: ответ пользователя - № варианта ответа
     """
     print(question)
     num_answer_lst = []
