@@ -9,7 +9,7 @@ class APIHandler(ABC):
     """
 
     @abstractmethod
-    def api_handler(self, vacancy_name: str):
+    def api_handler(self, vacancy_name: str, vacancy_city: str):
         """
         Абстрактный метод для работы с API сайтов
         """
@@ -30,30 +30,59 @@ class SuperJobAPI(APIHandler):
     def __str__(self):
         return ", ".join([f"{key}: {self.resp[key]}" for key in self.resp])
 
-    def api_handler(self, vacancy_name: str) -> list:
+    def api_handler(self, vacancy_name: str, vacancy_city=None) -> list:
         """
         Метод получения списка вакансий, согласно фильтру
-        :param vacancy_name: - строка для фильтра
+        :param vacancy_name: - строка для фильтра вакансий
+        :param vacancy_city: - город, для поиска вакансий
         :return: -> отформатированный по требуемым полям список вакансий
         """
+
+        # список, полученных при запросе к сайту, вакансий
+        list_vacancy = []
+
+        # список, который будет возвращать функция
         out_list_vacancy = []
+
+        # параметры, передаваемые в GET запросе
         params = {
             "count": 100,
             "archive": False,
-            "keyword": vacancy_name
+            "keyword": vacancy_name,
+            "period": 0,
+            "town": vacancy_city
+            # "extended_search_parameters": {"o": 2},
+
             # "keywords[0][srws]": 1,
             # "keywords[0][skwc]": "and",
-            # "keywords[0][keys]": keys,
+            # "keywords[0][keys]": vacancy_name,
 
             # "keywords": {
             #     "srws": 1,
             #     "skwc": "and",
-            #     "keys": keys
+            #     "keys": vacancy_name
             #             }
                   }
+
+        # просмотр максимального колличества вакансий, которое может вернуть сервер по запросу (500 шт.)
         for num_page in range(5):
             params["page"] = num_page
-            out_list_vacancy.extend(requests.get(self.host, headers=self.head, params=params).json()["objects"])
+            list_vacancy.extend(requests.get(self.host, headers=self.head, params=params).json()["objects"])
+
+        for vac in list_vacancy:
+            sal = {'from': vac['payment_from'],
+                   'to': vac['payment_to'],
+                   'currency': vac['currency']}
+            # форматируем вакансию для передачи в выходной список
+            vac_dict = dict(id=vac['id'],
+                            name=vac['profession'],
+                            profession=vac['work'],
+                            salary=sal,
+                            url=vac['link'])
+
+            # формируем выходной список
+            out_list_vacancy.append(vac_dict)
+
         return out_list_vacancy
 
 
@@ -67,10 +96,11 @@ class HHruAPI(APIHandler):
     def __str__(self):
         return ", ".join([f"{key}: {self.resp[key]}" for key in self.resp])
 
-    def api_handler(self, vacancy_name: str) -> list:
+    def api_handler(self, vacancy_name: str, vacancy_city=None) -> list:
         """
         Метод получения списка вакансий в Российском сегменте, согласно фильтру
-        :param vacancy_name: - строка для фильтра
+        :param vacancy_name: - строка для фильтра вакансий
+        :param vacancy_city: - город, для поиска вакансий
         :return: -> отформатированный по требуемым полям список вакансий
         """
         # список, полученных при запросе к сайту, вакансий
@@ -82,7 +112,7 @@ class HHruAPI(APIHandler):
         # параметры, передаваемые в GET запросе
         params = {
             "per_page": 100,
-            "area": ["113"],
+            "area": ["113"],    # {"name": vacancy_city}
             "text": f"name:{vacancy_name}",
                  }
 
@@ -117,14 +147,14 @@ class HHruAPI(APIHandler):
 obj_1 = SuperJobAPI()
 # print(obj_1)
 
-obj_2 = HHruAPI()
+# obj_2 = HHruAPI()
 # print(obj_2)
 #
-lst_vacancy = obj_2.api_handler("Python")
+lst_vacancy = obj_1.api_handler("Python", "Санкт-Петербург")
 print(len(lst_vacancy))
 # for i in lst_vacancy:
-#     print(i["profession"])
-# print(lst_vacancy[5])
+#     print(f'{i["profession"]}, {i["link"]}')
+# print(lst_vacancy[40])
 # print(len(lst_vacancy["objects"]))
 
 for i in lst_vacancy:
