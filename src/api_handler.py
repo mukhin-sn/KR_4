@@ -64,7 +64,7 @@ class SuperJobAPI(APIHandler):
             #             }
                   }
 
-        # просмотр максимального колличества вакансий, которое может вернуть сервер по запросу (500 шт.)
+        # просмотр максимального количества вакансий, которое может вернуть сервер по запросу (500 шт.)
         for num_page in range(5):
             params["page"] = num_page
             list_vacancy.extend(requests.get(self.host, headers=self.head, params=params).json()["objects"])
@@ -76,7 +76,8 @@ class SuperJobAPI(APIHandler):
             # форматируем вакансию для передачи в выходной список
             vac_dict = dict(id=vac['id'],
                             name=vac['profession'],
-                            profession=vac['work'],
+                            city=vac['town']['title'],
+                            profession=vac['candidat'],
                             salary=sal,
                             url=vac['link'])
 
@@ -112,11 +113,11 @@ class HHruAPI(APIHandler):
         # параметры, передаваемые в GET запросе
         params = {
             "per_page": 100,
-            "area": ["113"],    # {"name": vacancy_city}
-            "text": f"name:{vacancy_name}",
+            "area": 113,
+            "text": f"NAME:{vacancy_name}",
                  }
 
-        # просмотр максимального колличества вакансий, которое может вернуть сервер по запросу (2000 шт.)
+        # просмотр максимального количества вакансий, которое может вернуть сервер по запросу (2000 шт.)
         for num_page in range(20):
             params["page"] = num_page
             list_vacancy.extend(requests.get(self.host, params=params).json()["items"])
@@ -132,33 +133,35 @@ class HHruAPI(APIHandler):
                        }
 
             # форматируем вакансию для передачи в выходной список
-            vac_dict = dict(id=vac['id'],
-                            name=vac['name'],
-                            profession=vac['professional_roles'][0]['name'],
-                            salary=sal,
-                            url=vac['alternate_url'])
+            if vac['area']['name'] == vacancy_city.capitalize():
+                vac_dict = dict(id=vac['id'],
+                                name=vac['name'],
+                                city=vac['area']['name'],
+                                profession=vac['professional_roles'][0]['name'],
+                                salary=sal,
+                                url=vac['alternate_url'])
+                # формируем выходной список
+                out_list_vacancy.append(vac_dict)
 
-            # формируем выходной список
-            out_list_vacancy.append(vac_dict)
         return out_list_vacancy
 
 
 #####################################################################################################################
-obj_1 = SuperJobAPI()
+# obj_1 = SuperJobAPI()
 # print(obj_1)
 
 # obj_2 = HHruAPI()
 # print(obj_2)
 #
-lst_vacancy = obj_1.api_handler("Python", "Санкт-Петербург")
-print(len(lst_vacancy))
+# lst_vacancy = obj_1.api_handler("Python", "Новосибирск")
+# print(len(lst_vacancy))
 # for i in lst_vacancy:
 #     print(f'{i["profession"]}, {i["link"]}')
 # print(lst_vacancy[40])
 # print(len(lst_vacancy["objects"]))
 
-for i in lst_vacancy:
-    print(i)
+# for i in lst_vacancy:
+#     print(i)
 
 # for i in lst_vacancy:
 #     # print(i["name"])

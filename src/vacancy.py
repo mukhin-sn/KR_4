@@ -1,3 +1,8 @@
+from src.func import *
+from src.api_handler import *
+from src.file_handler import *
+
+
 class Vacancy:
     """Класс для работы с вакансиями"""
     def __init__(self, vacancy_name: str, vacancy_url: str, salary: str, description: str) -> None:
@@ -19,3 +24,13 @@ class Vacancy:
 # obj_vacancy = Vacancy("Python", "http://qoogle.com", "150 000", "Хороший сайт")
 # print(obj_vacancy)
 # print(repr(obj_vacancy))
+
+
+obj_hhru = HHruAPI()
+vac_obj_lst = []
+list_vacancy = obj_hhru.api_handler("Python", "Новосибирск")
+for i in list_vacancy:
+    vacancy = Vacancy(i["name"], i["url"], i["salary"], i["profession"])
+    vac_obj_lst.append(vacancy)
+    # print(vacancy)
+print(vac_obj_lst)
