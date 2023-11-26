@@ -133,7 +133,7 @@ class HHruAPI(APIHandler):
                        }
 
             # форматируем вакансию для передачи в выходной список
-            if vac['area']['name'] == vacancy_city.capitalize():
+            if vacancy_city is None or vac['area']['name'] == vacancy_city.capitalize():
                 vac_dict = dict(id=vac['id'],
                                 name=vac['name'],
                                 city=vac['area']['name'],

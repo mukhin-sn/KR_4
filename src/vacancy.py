@@ -28,9 +28,10 @@ class Vacancy:
 
 obj_hhru = HHruAPI()
 vac_obj_lst = []
-list_vacancy = obj_hhru.api_handler("Python", "Новосибирск")
+list_vacancy = obj_hhru.api_handler("Python", "Красноярск")
 for i in list_vacancy:
     vacancy = Vacancy(i["name"], i["url"], i["salary"], i["profession"])
     vac_obj_lst.append(vacancy)
     # print(vacancy)
 print(vac_obj_lst)
+print(len(vac_obj_lst))
