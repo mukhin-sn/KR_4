@@ -62,7 +62,7 @@ class SuperJobAPI(APIHandler):
             #     "skwc": "and",
             #     "keys": vacancy_name
             #             }
-                  }
+        }
 
         # просмотр максимального количества вакансий, которое может вернуть сервер по запросу (500 шт.)
         for num_page in range(5):
@@ -70,15 +70,23 @@ class SuperJobAPI(APIHandler):
             list_vacancy.extend(requests.get(self.host, headers=self.head, params=params).json()["objects"])
 
         for vac in list_vacancy:
-            sal = {'from': vac['payment_from'],
-                   'to': vac['payment_to'],
-                   'currency': vac['currency']}
+            # определяем максимальную величина заработной платы, предлагаемой по ваканси
+            # :param sal: максимальна величина заработной платы, предлагаемой по вакансии
+            sal = max(vac['payment_from'], vac['payment_to'])
+            # if vac['payment_from'] >= vac['payment_to']:
+            #     sal = vac['payment_from']
+            # else:
+            #     sal = vac['payment_to']
+            # sal = {'from': vac['payment_from'],
+            #        'to': vac['payment_to'],
+            #        'currency': vac['currency']}
             # форматируем вакансию для передачи в выходной список
             vac_dict = dict(id=vac['id'],
                             name=vac['profession'],
                             city=vac['town']['title'],
-                            profession=vac['candidat'],
+                            description=vac['candidat'],
                             salary=sal,
+                            currency=vac['currency'],
                             url=vac['link'])
 
             # формируем выходной список
@@ -115,7 +123,7 @@ class HHruAPI(APIHandler):
             "per_page": 100,
             "area": 113,
             "text": f"NAME:{vacancy_name}",
-                 }
+        }
 
         # просмотр максимального количества вакансий, которое может вернуть сервер по запросу (2000 шт.)
         for num_page in range(20):
@@ -125,20 +133,34 @@ class HHruAPI(APIHandler):
         # валидация данных поля 'salary'
         for vac in list_vacancy:
             if vac['salary'] is None:
-                sal = None
+                sal = 0
+                curr = ""
             else:
-                sal = {'from': vac['salary']['from'],
-                       'to': vac['salary']['to'],
-                       'currency': vac['salary']['currency'],
-                       }
+                if vac['salary']['from'] is None:
+                    _from = 0
+                else:
+                    _from = vac['salary']['from']
+                if vac['salary']['to'] is None:
+                    _to = 0
+                else:
+                    _to = vac['salary']['to']
+                sal = max(_from, _to)
+                curr = vac['salary']['currency']
+
+            # else:
+            #     sal = {'from': vac['salary']['from'],
+            #            'to': vac['salary']['to'],
+            #            'currency': vac['salary']['currency'],
+            #            }
 
             # форматируем вакансию для передачи в выходной список
             if vacancy_city is None or vac['area']['name'] == vacancy_city.capitalize():
                 vac_dict = dict(id=vac['id'],
                                 name=vac['name'],
                                 city=vac['area']['name'],
-                                profession=vac['professional_roles'][0]['name'],
+                                description=vac['professional_roles'][0]['name'],
                                 salary=sal,
+                                currency=curr,
                                 url=vac['alternate_url'])
                 # формируем выходной список
                 out_list_vacancy.append(vac_dict)
@@ -153,7 +175,7 @@ class HHruAPI(APIHandler):
 # obj_2 = HHruAPI()
 # print(obj_2)
 #
-# lst_vacancy = obj_1.api_handler("Python", "Новосибирск")
+# lst_vacancy = obj_2.api_handler("Python", "Новосибирск")
 # print(len(lst_vacancy))
 # for i in lst_vacancy:
 #     print(f'{i["profession"]}, {i["link"]}')
