@@ -10,42 +10,68 @@ from src.file_handler import *
  - по названию
 """
 
-platform = ["HeadHunter", "SuperJob", "HeadHunter и SuperJob"]
-platforms = {"1": "HeadHunter", "2": "SuperJob", "3": "HeadHunter и SuperJob", "4": "Выход из программы"}
-answers_lst = ["да", "нет"]
+# platform = ["HeadHunter", "SuperJob", "HeadHunter и SuperJob"]
+menu_1 = {"1": "HeadHunter",
+          "2": "SuperJob",
+          "3": "HeadHunter и SuperJob",
+          "4": "Выход из программы",
+          }
+
+menu_2 = {"1": "Сохранить результат запроса в файл?",
+          "2": "Добавить результат запроса в файл?",
+          "3": "Вывести результат запроса на экран?",
+          "4": "Вывести на экран ТОП-10 вакансий по зарплате?",
+          "5": "Сформировать новый запрос?",
+          }
+
+# answers_lst = ["да", "нет"]
 answers_list = {"1": "да", "2": "нет"}
 answer = ""
-
 
 if __name__ == '__main__':
 
     hh_api = HHruAPI()
-    # print(hh_api)
-
     sj_api = SuperJobAPI()
-    # print(sj_api)
-    print("=" * 50)
+    data_file = JSONSaver("src/json_data.json")
 
-    out_question("К какой платформе хотите выполнить запрос?", platforms)
-    while not check_answer(answer, platforms):
-        answer = input_answer()
-        if check_answer(answer, platforms):
-            break
-        print("Такого варианта нет. Введите существующий вариант")
-        continue
+    print("=" * 50)
+    out_question("К какой платформе хотите выполнить запрос?", menu_1)
+    answer = question_handler(menu_1)
+    # while not check_answer(answer, platforms):
+    #     answer = input_answer()
+    #     if check_answer(answer, platforms):
+    #         break
+    #     print("Такого варианта нет. Введите существующий вариант")
+    #     continue
     if answer == "4":
         quit("Выход из программы")
-    out_open_ended_question("Запрос по какой вакансии Вы хотите сформировать?")
-    vacancy_name = input_answer()
-    if answer == "1":
-        hh_vacancy = hh_api.api_handler(vacancy_name)
-        # print(hh_vacancy)
-    elif answer == "2":
-        sj_vacancy = sj_api.api_handler(vacancy_name)
-    else:
-        hh_vacancy = hh_api.api_handler(vacancy_name)
-        sj_vacancy = sj_api.api_handler(vacancy_name)
 
+    while True:
+        out_open_ended_question("Запрос по какой вакансии Вы хотите сформировать?")
+        vacancy_name = input_answer()
+        out_message("Пожалуйста подождите.\nОбработка запроса займет некоторое время")
+
+        if answer == "1":
+            vacancy = hh_api.api_handler(vacancy_name)
+        elif answer == "2":
+            vacancy = sj_api.api_handler(vacancy_name)
+        else:
+            vacancy = hh_api.api_handler(vacancy_name)
+            sj_vacancy = sj_api.api_handler(vacancy_name)
+
+        out_question("Что хотите сделать с результатом запроса?", menu_2)
+        answer = question_handler(menu_2)
+
+        if answer == "5":
+            continue
+        elif answer == "1":
+            data_file.add_vacancy(vacancy)
+        elif answer == "2":
+            pass
+        elif answer == "3":
+            pass
+        elif answer == "4":
+            pass
 
 
     # print(check_answer(answer, platforms))

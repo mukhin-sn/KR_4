@@ -7,19 +7,25 @@ def user_interaction():
     return None
 
 
+def out_message(text: str):
+    """
+    Метод вывода сообщения
+    :param text: содержит текст сообщения
+    :return: None
+    """
+    print(f"\n{'=' * 50}\n{text}\n{'=' * 50}")
+
+
 def out_question(question: str, answers: dict):
     """
     Метод вывода вопроса пользователю
     :param question: вопрос пользователю
     :param answers: словарь с вариантами ответов
     """
-    print(question)
-    print('=' * 50)
+    print(f"\n{question}\n{'=' * 50}")
     for key in answers:
         print(f"{key} - {answers[key]}")
-    print('=' * 50)
-    print("Введите номер выбранного варианта")
-    print('=' * 50)
+    print(f"{'=' * 50}\nВведите номер выбранного варианта\n{'=' * 50}")
 
 
 def out_open_ended_question(question: str):
@@ -27,8 +33,7 @@ def out_open_ended_question(question: str):
     Метод вывода вопроса пользователю без вариантов ответов
     :param question: вопрос пользователю
     """
-    print(question)
-    print('=' * 50)
+    print(f"\n{question}\n{'=' * 50}")
     print("Введите запрос")
     print('=' * 50)
 
@@ -48,6 +53,16 @@ def check_answer(answer: str, answer_options: dict) -> bool:
     if answer in answer_options:
         return True
     return False
+
+
+def question_handler(answer_options: dict):
+    answer = ""
+    while not check_answer(answer, answer_options):
+        answer = input_answer()
+        if check_answer(answer, answer_options):
+            return answer
+        print("Такого варианта нет. Введите существующий вариант")
+        continue
 
 
 def question_to_user(question: str, *arg_question: list, flag=True) -> str:

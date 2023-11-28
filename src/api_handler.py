@@ -172,13 +172,14 @@ class HHruAPI(APIHandler):
 # obj_1 = SuperJobAPI()
 # print(obj_1)
 
-# obj_2 = HHruAPI()
+obj_2 = HHruAPI()
 # print(obj_2)
 #
-# lst_vacancy = obj_2.api_handler("Python", "Новосибирск")
-# print(len(lst_vacancy))
+lst_vacancy = obj_2.api_handler("Python", "Новосибирск")
+print(len(lst_vacancy))
+print(lst_vacancy)
 # for i in lst_vacancy:
-#     print(f'{i["profession"]}, {i["link"]}')
+#     print(f'{i["description"]}, {i["url"]}')
 # print(lst_vacancy[40])
 # print(len(lst_vacancy["objects"]))
 
