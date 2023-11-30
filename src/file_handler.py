@@ -69,22 +69,17 @@ class JSONSaver(WorkingWithFiles):
                 data = file.read()
         except FileNotFoundError:
             self.save_vacancy()
-            # with open(self.filename, "w") as file:
-            #     json.dump({}, file)
 
         # Если файл не содержит словарь, то перезаписываем его с пустым словарем
         with open(self.filename, "r") as file:
             data = file.read()
         if len(data) < 2 or not (data[0] == "{" and data[-1] == "}"):
             self.save_vacancy()
-            # with open(self.filename, 'w') as file:
-            #     json.dump({}, file)
 
         with open(self.filename, "r") as file:
             data = json.load(file)
         if data == {}:
             file_data = vacancy
-            # file_data = dict(object=vacancy)
         else:
             file_data = data["object"]
             file_data.extend(vacancy)
@@ -103,11 +98,8 @@ class JSONSaver(WorkingWithFiles):
                              currency=i_dict["currency"],
                              url=i_dict["url"])
             temp_list.append(temp_dict)
-        # file_data = temp_list
 
         self.save_vacancy(temp_list)
-        # with open(self.filename, 'w') as file:
-        #     json.dump(file_data, file)
 
     def get_vacancy(self, data=None) -> list:
         """
@@ -155,9 +147,6 @@ class JSONSaver(WorkingWithFiles):
 
         file_data["object"] = new_lst
         self.save_vacancy(file_data)
-
-        # with open(self.filename, "w") as file:
-        #     json.dump(file_data, file)
 
 #################################################################################################################
 # filename_ = 'json_data.json'

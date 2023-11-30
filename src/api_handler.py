@@ -52,18 +52,7 @@ class SuperJobAPI(APIHandler):
             "keyword": vacancy_name,
             "period": 0,
             "town": vacancy_city
-            # "extended_search_parameters": {"o": 2},
-
-            # "keywords[0][srws]": 1,
-            # "keywords[0][skwc]": "and",
-            # "keywords[0][keys]": vacancy_name,
-
-            # "keywords": {
-            #     "srws": 1,
-            #     "skwc": "and",
-            #     "keys": vacancy_name
-            #             }
-        }
+            }
 
         # просмотр максимального количества вакансий, которое может вернуть сервер по запросу (500 шт.)
         for num_page in range(5):
@@ -74,13 +63,7 @@ class SuperJobAPI(APIHandler):
             # определяем максимальную величина заработной платы, предлагаемой по ваканси
             # :param sal: максимальна величина заработной платы, предлагаемой по вакансии
             sal = str(max(vac['payment_from'], vac['payment_to']))
-            # if vac['payment_from'] >= vac['payment_to']:
-            #     sal = vac['payment_from']
-            # else:
-            #     sal = vac['payment_to']
-            # sal = {'from': vac['payment_from'],
-            #        'to': vac['payment_to'],
-            #        'currency': vac['currency']}
+
             # форматируем вакансию для передачи в выходной список
             vac_dict = dict(id=vac['id'],
                             name=vac['profession'],
@@ -148,12 +131,6 @@ class HHruAPI(APIHandler):
                 sal = str(max(_from, _to))
                 curr = vac['salary']['currency']
 
-            # else:
-            #     sal = {'from': vac['salary']['from'],
-            #            'to': vac['salary']['to'],
-            #            'currency': vac['salary']['currency'],
-            #            }
-
             # форматируем вакансию для передачи в выходной список
             if vacancy_city is None or vac['area']['name'] == vacancy_city.capitalize():
                 vac_dict = dict(id=vac['id'],
@@ -170,31 +147,31 @@ class HHruAPI(APIHandler):
 
 
 #####################################################################################################################
-obj_1 = SuperJobAPI()
-obj_2 = HHruAPI()
+# obj_1 = SuperJobAPI()
+# obj_2 = HHruAPI()
 
 # print(obj_1)
 # print(obj_2)
 #
-lst_vacancy = obj_2.api_handler("Python", "Новосибирск")
-print(len(lst_vacancy))
+# lst_vacancy = obj_2.api_handler("Python", "Новосибирск")
+# print(len(lst_vacancy))
 # print(lst_vacancy)
 # for i in lst_vacancy:
 #     print(f'{i["description"]}, {i["url"]}')
 # print(lst_vacancy[40])
 # print(len(lst_vacancy["objects"]))
 
-for i in lst_vacancy:
-    print(i)
-
-print("-" * 50)
-filename_ = 'json_data.json'
-json_data = JSONSaver(filename_)
-
-json_data.add_vacancy(lst_vacancy)
-dat = json_data.get_vacancy("senior")
-for i in dat:
-    print(i)
+# for i in lst_vacancy:
+#     print(i)
+#
+# print("-" * 50)
+# filename_ = 'json_data.json'
+# json_data = JSONSaver(filename_)
+#
+# json_data.add_vacancy(lst_vacancy)
+# dat = json_data.get_vacancy("senior")
+# for i in dat:
+#     print(i)
 
 # for i in lst_vacancy:
 #     # print(i["name"])

@@ -19,10 +19,6 @@ class Vacancy:
 
         return other if isinstance(other, int) else other.salary
 
-    # def __le__(self, other):
-    #     sal = self.__verify_date(other)
-    #     return self.salary <= sal
-
     def __lt__(self, other):
         sal = self.__verify_date(other)
         return self.salary < sal
@@ -43,19 +39,19 @@ class Vacancy:
 # print(repr(obj_vacancy))
 
 
-obj_hhru = HHruAPI()
-vac_obj_lst = []
-list_vacancy = obj_hhru.api_handler("Python", "Красноярск")
-for i in list_vacancy:
-    vacancy = Vacancy(i["name"], i["url"], i["salary"], i["description"])
-    vac_obj_lst.append(vacancy)
-    # print(vacancy)
-# print(vac_obj_lst)
-print(len(vac_obj_lst))
-
-for i in vac_obj_lst:
-    print(f"{i.vacancy_name}, зарплата: {i.salary}")
-v_top = sorted(vac_obj_lst, reverse=True)
-print("=" * 50)
-for i in v_top:
-    print(f"{i.vacancy_name}, зарплата: {i.salary}")
+# obj_hhru = HHruAPI()
+# vac_obj_lst = []
+# list_vacancy = obj_hhru.api_handler("Python", "Красноярск")
+# for i in list_vacancy:
+#     vacancy = Vacancy(i["name"], i["url"], i["salary"], i["description"])
+#     vac_obj_lst.append(vacancy)
+#     # print(vacancy)
+# # print(vac_obj_lst)
+# print(len(vac_obj_lst))
+#
+# for i in vac_obj_lst:
+#     print(f"{i.vacancy_name}, зарплата: {i.salary}")
+# v_top = sorted(vac_obj_lst, reverse=True)
+# print("=" * 50)
+# for i in v_top:
+#     print(f"{i.vacancy_name}, зарплата: {i.salary}")
