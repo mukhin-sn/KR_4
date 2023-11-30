@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import requests
 import os
+from src.file_handler import *
 
 
 class APIHandler(ABC):
@@ -72,7 +73,7 @@ class SuperJobAPI(APIHandler):
         for vac in list_vacancy:
             # определяем максимальную величина заработной платы, предлагаемой по ваканси
             # :param sal: максимальна величина заработной платы, предлагаемой по вакансии
-            sal = max(vac['payment_from'], vac['payment_to'])
+            sal = str(max(vac['payment_from'], vac['payment_to']))
             # if vac['payment_from'] >= vac['payment_to']:
             #     sal = vac['payment_from']
             # else:
@@ -133,7 +134,7 @@ class HHruAPI(APIHandler):
         # валидация данных поля 'salary'
         for vac in list_vacancy:
             if vac['salary'] is None:
-                sal = 0
+                sal = "0"
                 curr = ""
             else:
                 if vac['salary']['from'] is None:
@@ -144,7 +145,7 @@ class HHruAPI(APIHandler):
                     _to = 0
                 else:
                     _to = vac['salary']['to']
-                sal = max(_from, _to)
+                sal = str(max(_from, _to))
                 curr = vac['salary']['currency']
 
             # else:
@@ -169,22 +170,31 @@ class HHruAPI(APIHandler):
 
 
 #####################################################################################################################
-# obj_1 = SuperJobAPI()
-# print(obj_1)
-
+obj_1 = SuperJobAPI()
 obj_2 = HHruAPI()
+
+# print(obj_1)
 # print(obj_2)
 #
 lst_vacancy = obj_2.api_handler("Python", "Новосибирск")
 print(len(lst_vacancy))
-print(lst_vacancy)
+# print(lst_vacancy)
 # for i in lst_vacancy:
 #     print(f'{i["description"]}, {i["url"]}')
 # print(lst_vacancy[40])
 # print(len(lst_vacancy["objects"]))
 
-# for i in lst_vacancy:
-#     print(i)
+for i in lst_vacancy:
+    print(i)
+
+print("-" * 50)
+filename_ = 'json_data.json'
+json_data = JSONSaver(filename_)
+
+json_data.add_vacancy(lst_vacancy)
+dat = json_data.get_vacancy("senior")
+for i in dat:
+    print(i)
 
 # for i in lst_vacancy:
 #     # print(i["name"])

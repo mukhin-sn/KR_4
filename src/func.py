@@ -107,13 +107,15 @@ def question_to_user(question: str, *arg_question: list, flag=True) -> str:
 # print(os.getenv('SJ_API_KEY'))
 
 # print(response.text)
+# print("-" * 50)
 
 # data = response.content.decode()
 
 # json_data = response.json()
 # for i in json_data["items"]:
 #     print(i)
-# print(json_data["items"][10])
+# print(json_data["items"][0])
+# print(json_data["objects"][0])
 
 # print(type(json_data))
 # j_data = json.loads(json_data)
