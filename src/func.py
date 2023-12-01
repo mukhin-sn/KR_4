@@ -55,6 +55,17 @@ def check_answer(answer: str, answer_options: dict) -> bool:
     return False
 
 
+def output_on_display(data: list) -> None:
+    """
+    Метод вывода на экран элементов списка вакансий,
+    полученных в результате запрса
+    :param data: список ваканси (в нашем случае - список словарей)
+    :return: None
+    """
+    for dt in data:
+        print(dt)
+
+
 def question_handler(answer_options: dict):
     answer = ""
     while not check_answer(answer, answer_options):

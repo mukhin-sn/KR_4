@@ -65,7 +65,7 @@ class SuperJobAPI(APIHandler):
             sal = str(max(vac['payment_from'], vac['payment_to']))
 
             # форматируем вакансию для передачи в выходной список
-            vac_dict = dict(id=vac['id'],
+            vac_dict = dict(id=str(vac['id']),
                             name=vac['profession'],
                             city=vac['town']['title'],
                             description=vac['candidat'],
@@ -153,7 +153,7 @@ class HHruAPI(APIHandler):
 # print(obj_1)
 # print(obj_2)
 #
-# lst_vacancy = obj_2.api_handler("Python", "Новосибирск")
+# lst_vacancy = obj_1.api_handler("Python", "Санкт-Петербург")
 # print(len(lst_vacancy))
 # print(lst_vacancy)
 # for i in lst_vacancy:
@@ -169,7 +169,7 @@ class HHruAPI(APIHandler):
 # json_data = JSONSaver(filename_)
 #
 # json_data.add_vacancy(lst_vacancy)
-# dat = json_data.get_vacancy("senior")
+# dat = json_data.get_vacancy("аналитик")
 # for i in dat:
 #     print(i)
 

@@ -4,13 +4,9 @@ from src.file_handler import *
 
 """
 Программа поиска вакансий на сайтах 'superjob.ru' и/или 'hh.ru'
-с возможностью сортировки:
- - по региону;
- - по зарплате;
- - по названию
+с возможностью сортировки по зарплате
 """
 
-# platform = ["HeadHunter", "SuperJob", "HeadHunter и SuperJob"]
 menu_1 = {"1": "HeadHunter",
           "2": "SuperJob",
           "3": "HeadHunter и SuperJob",
@@ -24,7 +20,6 @@ menu_2 = {"1": "Сохранить результат запроса в файл
           "5": "Сформировать новый запрос?",
           }
 
-# answers_lst = ["да", "нет"]
 answers_list = {"1": "да", "2": "нет"}
 answer = ""
 
@@ -57,7 +52,7 @@ if __name__ == '__main__':
             vacancy = sj_api.api_handler(vacancy_name)
         else:
             vacancy = hh_api.api_handler(vacancy_name)
-            sj_vacancy = sj_api.api_handler(vacancy_name)
+            vacancy.append(sj_api.api_handler(vacancy_name))
 
         out_question("Что хотите сделать с результатом запроса?", menu_2)
         answer = question_handler(menu_2)
@@ -65,11 +60,11 @@ if __name__ == '__main__':
         if answer == "5":
             continue
         elif answer == "1":
-            data_file.add_vacancy(vacancy)
+            data_file.save_vacancy(vacancy)
         elif answer == "2":
-            pass
+            data_file.add_vacancy(vacancy)
         elif answer == "3":
-            pass
+            output_on_display(vacancy)
         elif answer == "4":
             pass
 
