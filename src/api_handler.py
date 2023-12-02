@@ -59,7 +59,7 @@ class SuperJobAPI(APIHandler):
             list_vacancy.extend(requests.get(self.host, headers=self.head, params=params).json()["objects"])
 
         for vac in list_vacancy:
-            # определяем максимальную величина заработной платы, предлагаемой по ваканси
+            # определяем максимальную величину заработной платы, предлагаемой по вакансии
             # :param sal: максимальна величина заработной платы, предлагаемой по вакансии
             sal = str(max(vac['payment_from'], vac['payment_to']))
 

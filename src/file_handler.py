@@ -47,7 +47,7 @@ class JSONSaver(WorkingWithFiles):
     def save_vacancy(self, data=None):
         """
         Метод записи данных в файл.
-        файл при этом перезаписывается
+        Файл при этом перезаписывается
         :param data: данные, сохраняемые в файл (список словарей)
         """
         if data is None:
@@ -57,9 +57,33 @@ class JSONSaver(WorkingWithFiles):
         with open(self.filename, 'w') as file:
             json.dump(data, file)
 
+    def remove_duplicate(self, data):
+        """
+        Метод удаляет дубликаты записей из списка
+        и формирует список для вывода
+        :param data:
+        :return:
+        """
+
+        # Убираем дублирующиеся записи
+        new_lst = [dict(s) for s in set(frozenset(fd.items()) for fd in data)]
+
+        # Приводим список словарей к нормальному виду
+        temp_list = []
+        for i_dict in new_lst:
+            temp_dict = dict(id=i_dict["id"],
+                             name=i_dict["name"],
+                             city=i_dict["city"],
+                             description=i_dict["description"],
+                             salary=i_dict["salary"],
+                             currency=i_dict["currency"],
+                             url=i_dict["url"])
+            temp_list.append(temp_dict)
+        return temp_list
+
     def add_vacancy(self, vacancy=None):
         """
-        Добавляет вакансию (словарь) в файл
+        Добавляет вакансии (словарь) в файл
         """
         # Если файл отсутствует, то создаем его с пустым словарем
         if vacancy is None:
@@ -84,40 +108,54 @@ class JSONSaver(WorkingWithFiles):
             file_data = data["object"]
             file_data.extend(vacancy)
 
-        # Убираем дублирующиеся записи
-        new_lst = [dict(s) for s in set(frozenset(fd.items()) for fd in file_data)]
+        # # Убираем дублирующиеся записи
+        # new_lst = [dict(s) for s in set(frozenset(fd.items()) for fd in file_data)]
+        #
+        # # Приводим список словарей к нормальному виду
+        # temp_list = []
+        # for i_dict in new_lst:
+        #     temp_dict = dict(id=i_dict["id"],
+        #                      name=i_dict["name"],
+        #                      city=i_dict["city"],
+        #                      description=i_dict["description"],
+        #                      salary=i_dict["salary"],
+        #                      currency=i_dict["currency"],
+        #                      url=i_dict["url"])
+        #     temp_list.append(temp_dict)
+        # self.save_vacancy(temp_list)
 
-        # Приводим список словарей к нормальному виду
-        temp_list = []
-        for i_dict in new_lst:
-            temp_dict = dict(id=i_dict["id"],
-                             name=i_dict["name"],
-                             city=i_dict["city"],
-                             description=i_dict["description"],
-                             salary=i_dict["salary"],
-                             currency=i_dict["currency"],
-                             url=i_dict["url"])
-            temp_list.append(temp_dict)
+        self.save_vacancy(self.remove_duplicate(file_data))
 
-        self.save_vacancy(temp_list)
-
-    def get_vacancy(self, data=None) -> list:
+    def get_vacancy(self, *args) -> list:
         """
-        Возвращает данные из файла, соответствующие критериям 'data='
+        Возвращает данные из файла, соответствующие критериям *args
+        Если args=None - возвращает всё содержимое файла
+        :param args: список для поиска
+        :return: список со словарями, удовлетворяющий поисковому запросу
         """
         out_data = []
-
-        if not data or data == " ":
-            return out_data
-
+        args_list = []
+        for i in args:
+            if isinstance(i, str):
+                args_list.append(i.lower())
         try:
+            if len(args) == 0:  # not data or data == " ":
+                with open(self.filename, "r") as file:
+                    file_data = json.load(file)
+                return file_data["object"]
+
             with open(self.filename, "r") as file:
                 file_data = json.load(file)
                 for vac in file_data["object"]:
                     for key in vac:
-                        if data.lower() in vac[key].lower():
-                            out_data.append(vac)
-                return out_data
+                        for i in args_list:
+                            if i in vac[key].lower():
+                                out_data.append(vac)
+
+                # # Убираем дублирующиеся записи
+                # new_lst = [dict(s) for s in set(frozenset(fd.items()) for fd in out_data)]
+
+                return self.remove_duplicate(out_data)  # new_lst
         except FileNotFoundError:
             print("Файл не найден")
 
@@ -140,7 +178,7 @@ class JSONSaver(WorkingWithFiles):
                 # Проверяем данные из запроса 'data' в каждом поле словаря
                 if data.lower() in vac[key].lower():
                     is_available = True
-            # Если данных небыло ни в одном поле словаря,
+            # Если данных не было ни в одном поле словаря,
             # то добавляем его в новый список
             if not is_available:
                 new_lst.append(vac)

@@ -58,8 +58,8 @@ def check_answer(answer: str, answer_options: dict) -> bool:
 def output_on_display(data: list) -> None:
     """
     Метод вывода на экран элементов списка вакансий,
-    полученных в результате запрса
-    :param data: список ваканси (в нашем случае - список словарей)
+    полученных в результате запроса
+    :param data: список вакансий (в нашем случае - список словарей)
     :return: None
     """
     for dt in data:
@@ -76,12 +76,12 @@ def question_handler(answer_options: dict):
         continue
 
 
-def top_10(data: list):
+def top_10(data: list) -> list:
     """
     Метод вывода ТОП-10 вакансий.
-    Если общее колличество вакансий меньше 10, то выводит все
+    Если общее количество вакансий меньше 10, то выводит все
     :param data: список данных с вакансиями (список словарей)
-    :return: None
+    :return: список со словарями ТОП-10 вакансий
     """
     try:
         vac_obj_lst = []
@@ -92,7 +92,7 @@ def top_10(data: list):
         # Сортируем вакансии в списке по зарплате
         v_top = sorted(vac_obj_lst, reverse=True)
 
-        # Проверка колличества вакансий в списке
+        # Проверка количества вакансий в списке
         if len(vac_obj_lst) > 10:
             top_list = v_top[:10]
         else:
@@ -105,11 +105,31 @@ def top_10(data: list):
                   f"{i.data['name']}, "
                   f"зарплата: {i.data['salary']} "
                   f"{i.data['currency']}")
-        return top_list
+
+        # Формирования выходного списка (если придется сохранять в файл)
+        out_list = []
+        for obj in top_list:
+            out_list.append(obj.data)
+        return out_list
 
     except TypeError:
         print("Неверный формат данных")
 
+
+def search_handler(data_list: list, search_query: str) -> list:
+    """
+    Метод поиска в списке данных по запросу
+    :param data_list: список данных, в котором производится поиск
+    :param search_query: строка для поиска в списке
+    :return: список с элементами, удовлетворяющими запросу
+    """
+    out_list = []
+    for dic_i in data_list:
+        for key in dic_i:
+            if search_query.lower() in dic_i[key].lower():
+                out_list.append(dic_i)
+
+    return out_list
 
 ################
 
@@ -143,6 +163,11 @@ def question_to_user(question: str, *arg_question: list, flag=True) -> str:
 
 ####################################################################################
 
+# json_saver = JSONSaver("json_data.json")
+# data_vac = json_saver.get_vacancy()
+# print(data_vac)
+# res_out = search_handler(data_vac, "backend")
+# print(res_out)
 
 # obj_vacancy = HHruAPI()
 # vac_obj_lst = []
