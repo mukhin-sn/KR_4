@@ -1,4 +1,3 @@
-from abc import ABC, abstractmethod
 import requests
 import os
 from src.file_handler import *

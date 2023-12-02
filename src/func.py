@@ -1,6 +1,4 @@
-import requests
-import json
-import os
+from src.vacancy import *
 
 
 def user_interaction():
@@ -76,6 +74,43 @@ def question_handler(answer_options: dict):
         continue
 
 
+def top_ten(data: list):
+    """
+    Метод вывода ТОП-10 вакансий.
+    Если общее колличество вакансий меньше 10, то выводит все
+    :param data: список данных с вакансиями (список словарей)
+    :return: None
+    """
+    try:
+        vac_obj_lst = []
+        for vac in data:
+            vacancy = Vacancy(vac)
+            vac_obj_lst.append(vacancy)
+
+        # Сортируем вакансии в списке по зарплате
+        v_top = sorted(vac_obj_lst, reverse=True)
+
+        # Проверка колличества вакансий в списке
+        if len(vac_obj_lst) > 10:
+            top_list = v_top[:10]
+        else:
+            top_list = v_top
+
+        # Вывод на экран ТОП-листа
+        print("=" * 50)
+        for i in top_list:
+            print(f"id: {i.data['id']}, "
+                  f"{i.data['name']}, "
+                  f"зарплата: {i.data['salary']} "
+                  f"{i.data['currency']}")
+
+    except TypeError:
+        print("Неверный формат данных")
+
+
+################
+
+
 def question_to_user(question: str, *arg_question: list, flag=True) -> str:
     """
     Метод вывода вопроса пользователю
@@ -103,6 +138,15 @@ def question_to_user(question: str, *arg_question: list, flag=True) -> str:
         return ""
 
 
+####################################################################################
+
+
+# obj_vacancy = HHruAPI()
+# vac_obj_lst = []
+# list_vacancy = obj_vacancy.api_handler("Python", "Москва")
+# list_vacancy = 125
+# top_ten(list_vacancy)
+
 # country_id = "113"
 # url_var = 'https://api.hh.ru/vacancies/' # 'https://api.hh.ru/areas/'
 # url_var = 'https://api.superjob.ru/2.0/vacancies/'
@@ -111,7 +155,11 @@ def question_to_user(question: str, *arg_question: list, flag=True) -> str:
 #         "X-Api-App-Id": os.getenv('SJ_API_KEY'),
 #         "Content-Type": "application/x-www-form-urlencoded"}
 
-# response = requests.get(url_var, headers={"User-Agent": "python-requests/2.31.0"}, params={"page": 0, "per_page": 2}) #headers={"User-Agent": "MyApp/1.0"}
+# response = requests.get(
+#     url_var,
+#     headers={"User-Agent": "python-requests/2.31.0"},
+#     params={"page": 0, "per_page": 2}
+# )   # headers={"User-Agent": "MyApp/1.0"}
 
 # response = requests.get(url_var, headers={"X-Api-App-Id": os.getenv('SJ_API_KEY')})
 # response = requests.get(url_var, params={"text": "NAME:Python"})
@@ -188,5 +236,5 @@ def question_to_user(question: str, *arg_question: list, flag=True) -> str:
 # print(areas)
 # for i in areas:
 #     print(f"{i[0]} - {i[1]}, {i[2]} - {i[3]}")
-    # areas_dict = dict([i[3], i[2]])
-    # print(f"{areas_dict[i[3]]} - ")
+# areas_dict = dict([i[3], i[2]])
+# print(f"{areas_dict[i[3]]} - ")

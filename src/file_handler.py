@@ -48,7 +48,7 @@ class JSONSaver(WorkingWithFiles):
         """
         Метод записи данных в файл.
         файл при этом перезаписывается
-        :param data: данные, сохраняемые в файл :list
+        :param data: данные, сохраняемые в файл (список словарей)
         """
         if data is None:
             data = {}

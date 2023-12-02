@@ -68,7 +68,6 @@ if __name__ == '__main__':
         elif answer == "4":
             pass
 
-
     # print(check_answer(answer, platforms))
     # out_question("Продолжить?", answers_list)
     # answer = input_answer()
