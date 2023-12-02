@@ -1,4 +1,5 @@
 from src.vacancy import *
+from src.api_handler import *
 
 
 def user_interaction():
@@ -11,7 +12,7 @@ def out_message(text: str):
     :param text: содержит текст сообщения
     :return: None
     """
-    print(f"\n{'=' * 50}\n{text}\n{'=' * 50}")
+    print(f"{text}\n{'-' * 50}")
 
 
 def out_question(question: str, answers: dict):
@@ -20,20 +21,21 @@ def out_question(question: str, answers: dict):
     :param question: вопрос пользователю
     :param answers: словарь с вариантами ответов
     """
-    print(f"\n{question}\n{'=' * 50}")
+    print(f"{question}\n{'-' * 50}")
     for key in answers:
         print(f"{key} - {answers[key]}")
-    print(f"{'=' * 50}\nВведите номер выбранного варианта\n{'=' * 50}")
+    out_message("Введите номер выбранного варианта")
+    # print(f"{'=' * 50}\nВведите номер выбранного варианта\n{'=' * 50}")
 
 
-def out_open_ended_question(question: str):
-    """
-    Метод вывода вопроса пользователю без вариантов ответов
-    :param question: вопрос пользователю
-    """
-    print(f"\n{question}\n{'=' * 50}")
-    print("Введите запрос")
-    print('=' * 50)
+# def out_open_ended_question(question: str):
+#     """
+#     Метод вывода вопроса пользователю без вариантов ответов
+#     :param question: вопрос пользователю
+#     """
+#     print(f"\n{question}\n{'=' * 50}")
+    # print("Введите запрос")
+    # print('=' * 50)
 
 
 def input_answer():
@@ -74,7 +76,7 @@ def question_handler(answer_options: dict):
         continue
 
 
-def top_ten(data: list):
+def top_10(data: list):
     """
     Метод вывода ТОП-10 вакансий.
     Если общее колличество вакансий меньше 10, то выводит все
@@ -103,6 +105,7 @@ def top_ten(data: list):
                   f"{i.data['name']}, "
                   f"зарплата: {i.data['salary']} "
                   f"{i.data['currency']}")
+        return top_list
 
     except TypeError:
         print("Неверный формат данных")
