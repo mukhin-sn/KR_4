@@ -2,10 +2,6 @@ from src.vacancy import *
 from src.api_handler import *
 
 
-def user_interaction():
-    return None
-
-
 def out_message(text: str):
     """
     Метод вывода сообщения
@@ -34,8 +30,8 @@ def out_question(question: str, answers: dict):
 #     :param question: вопрос пользователю
 #     """
 #     print(f"\n{question}\n{'=' * 50}")
-    # print("Введите запрос")
-    # print('=' * 50)
+# print("Введите запрос")
+# print('=' * 50)
 
 
 def input_answer():
@@ -62,8 +58,12 @@ def output_on_display(data: list) -> None:
     :param data: список вакансий (в нашем случае - список словарей)
     :return: None
     """
-    for dt in data:
-        print(dt)
+    temp_list = []
+    for dic_data in data:
+        for key, value in dic_data.items():
+            temp_list.append(": ".join([key, value]))
+        print(", ".join(temp_list))
+        temp_list = []
 
 
 def question_handler(answer_options: dict):
@@ -131,6 +131,40 @@ def search_handler(data_list: list, search_query: str) -> list:
 
     return out_list
 
+
+def menu_one_handler():
+    pass
+
+def user_interaction():
+    menu_1 = {"1": "Работа с запросами",
+              "2": "Работа с файлом",
+              "3": "Выход из программы",
+              }
+
+    menu_2 = {"1": "Запрос на HeadHunter",
+              "2": "Запрос на SuperJob",
+              "3": "Запрос на HeadHunter и SuperJob",
+              "4": "Новый запрос, без сохранения результатов",
+              "5": "Найти в найденом",
+              "6": "Вывести ТОП-10 результатов поиска по зарплате",
+              "7": "Сохранить результат запроса (будете перенаправлены в меню работы с файлом)",
+              "8": "Возврат в основное меню",
+              }
+
+    menu_3 = {"1": "Сохранить результат в файл",
+              "2": "Добавить результат в файл",
+              "3": "Найти в файле",
+              "4": "Найти в найденом",
+              "5": "Удалить из файла",
+              "6": "Вывести содержимое файла на экран",
+              "7": "Выйти в меню запросов",
+              }
+
+    answers_list = {"1": "да", "2": "нет"}
+    while True:
+        pass
+
+
 ################
 
 
@@ -165,6 +199,7 @@ def question_to_user(question: str, *arg_question: list, flag=True) -> str:
 
 # json_saver = JSONSaver("json_data.json")
 # data_vac = json_saver.get_vacancy()
+# output_on_display(data_vac)
 # print(data_vac)
 # res_out = search_handler(data_vac, "backend")
 # print(res_out)

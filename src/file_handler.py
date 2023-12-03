@@ -51,7 +51,7 @@ class JSONSaver(WorkingWithFiles):
         :param data: данные, сохраняемые в файл (список словарей)
         """
         if data is None:
-            data = {}
+            data = dict(object=[])
         else:
             data = dict(object=data)
         with open(self.filename, 'w') as file:
@@ -90,21 +90,21 @@ class JSONSaver(WorkingWithFiles):
             vacancy = []
         try:
             with open(self.filename, "r") as file:
-                data = file.read()
+                file.read()
         except FileNotFoundError:
             self.save_vacancy()
 
         # Если файл не содержит словарь, то перезаписываем его с пустым словарем
         with open(self.filename, "r") as file:
             data = file.read()
-        if len(data) < 2 or not (data[0] == "{" and data[-1] == "}"):
-            self.save_vacancy()
+            if len(data) < 12 or not (data[0] == "{" and data[-1] == "}"):
+                self.save_vacancy()
 
         with open(self.filename, "r") as file:
             data = json.load(file)
-        if data == {}:
-            file_data = vacancy
-        else:
+            # if data == {}:
+            #     file_data = vacancy
+            # else:
             file_data = data["object"]
             file_data.extend(vacancy)
 
@@ -158,15 +158,26 @@ class JSONSaver(WorkingWithFiles):
                 return self.remove_duplicate(out_data)  # new_lst
         except FileNotFoundError:
             print("Файл не найден")
+            print("будет создан пустой json - файл")
+            self.save_vacancy()
+            return []
 
     def del_vacancy(self, data=None):
         """
         Удаляет данные с параметром 'data' из файла
         """
-        if not data or data == " ":
-            return None
+        # if not data or data == " ":
+        #     return None
         # Проверяем наличие файла
-        self.add_vacancy()
+        try:
+            with open(self.filename, "r") as file:
+                file.read()
+        except FileNotFoundError:
+            print("Файл не найден")
+            print("будет создан пустой json - файл")
+            self.save_vacancy()
+            return None
+        # self.add_vacancy()
 
         with open(self.filename, "r") as file:
             file_data = json.load(file)
@@ -178,15 +189,18 @@ class JSONSaver(WorkingWithFiles):
                 # Проверяем данные из запроса 'data' в каждом поле словаря
                 if data.lower() in vac[key].lower():
                     is_available = True
+                    break
+
             # Если данных не было ни в одном поле словаря,
             # то добавляем его в новый список
             if not is_available:
                 new_lst.append(vac)
+        # print(new_lst)
 
-        file_data["object"] = new_lst
-        self.save_vacancy(file_data)
+        self.save_vacancy(new_lst)
 
 #################################################################################################################
+
 # filename_ = 'json_data.json'
 # json_data = JSONSaver(filename_)
 #
@@ -198,7 +212,7 @@ class JSONSaver(WorkingWithFiles):
 # json_data.add_vacancy(data_list_2)
 # json_data.add_vacancy()
 # print(json_data.get_vacancy("d"))
-# json_data.del_vacancy("a")
+# json_data.del_vacancy("Backend")
 # print(json_data.get_vacancy(" "))
 # with open(filename_, "r") as file_:
 #     data_ = json.load(file_)
