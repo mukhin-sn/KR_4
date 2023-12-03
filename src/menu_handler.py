@@ -3,6 +3,10 @@ from src.api_handler import *
 
 
 class MenuHandler:
+    """
+    Класс для работы с меню программы парсинга сайтов
+    hh.ru и superjob.ru
+    """
     def __init__(self, hh_api: HHruAPI, sj_api: SuperJobAPI, data_file: JSONSaver):
 
         self.menu_1 = {"1": "Работа с запросами",
@@ -14,7 +18,7 @@ class MenuHandler:
                        "2": "Запрос на SuperJob",
                        "3": "Запрос на HeadHunter и SuperJob",
                        "4": "Новый запрос, без сохранения результатов",
-                       "5": "Найти в найденом",
+                       "5": "Найти в найденном",
                        "6": "Вывести ТОП-10 результатов поиска по зарплате",
                        "7": "Сохранить результат запроса (будете перенаправлены в меню работы с файлом)",
                        "8": "Возврат в основное меню",
@@ -23,7 +27,7 @@ class MenuHandler:
         self.menu_3 = {"1": "Сохранить результат в файл (файл будет перезаписан новыми данными)",
                        "2": "Добавить результат в файл",
                        "3": "Найти в файле",
-                       "4": "Найти в найденом",
+                       "4": "Найти в найденном",
                        "5": "Удалить из файла",
                        "6": "Вывести содержимое файла на экран",
                        "7": "Выйти в меню запросов",
@@ -42,40 +46,34 @@ class MenuHandler:
         Метод вывода сообщения
         :param text: содержит текст сообщения
         :return: None
-            """
+        """
         print(f"\n{text}\n{'-' * 50}")
 
     def out_question(self, question: str, answers: dict):
         """
         Метод вывода вопроса пользователю
-        :param question: вопрос пользователю
-        :param answers: словарь с вариантами ответов
+        :param question: - вопрос пользователю
+        :param answers: - словарь с вариантами ответов
         """
         print(f"\n{question}\n{'-' * 50}")
         for key in answers:
             print(f"{key} - {answers[key]}")
         self.out_message("Введите номер выбранного варианта")
-        # print(f"{'=' * 50}\nВведите номер выбранного варианта\n{'=' * 50}")
-
-    # def out_open_ended_question(question: str):
-    #     """
-    #     Метод вывода вопроса пользователю без вариантов ответов
-    #     :param question: вопрос пользователю
-    #     """
-    #     print(f"\n{question}\n{'=' * 50}")
-    # print("Введите запрос")
-    # print('=' * 50)
 
     def input_answer(self):
+        """
+        Метод ввода ответа на запрос
+        :return:
+        """
         answer = input("-> ")
         return answer
 
     def check_answer(self, answer: str, answer_options: dict) -> bool:
         """
         Метод проверки ответа пользователя
-        :param answer: ответ пользователя
-        :param answer_options: допустимые варианты ответов
-        :return: True, если 'answer' есть в 'answer_options'
+        :param answer: - ответ пользователя
+        :param answer_options: - допустимые варианты ответов
+        :return: - True, если 'answer' есть в 'answer_options'
         """
         if answer in answer_options:
             return True
@@ -85,10 +83,9 @@ class MenuHandler:
         """
         Метод вывода на экран элементов списка вакансий,
         полученных в результате запроса
-        :param data: список вакансий (в нашем случае - список словарей)
+        :param data: - список вакансий (в нашем случае - список словарей)
         :return: None
         """
-
         temp_list = []
         for dic_data in data:
             for key, value in dic_data.items():
@@ -99,11 +96,11 @@ class MenuHandler:
     def question_handler(self, answer_options: dict) -> str:
         """
         Метод обработки ответа на вопрос
-        зацикливается, пока небудет введен существующий вариант,
+        зацикливается, пока не будет введен существующий вариант,
         соответствущий ключу словаря с вариантами ответов.
 
-        :param answer_options: словарь с вариантами ответов
-        :return: ключ словаря, соответствующий ответу пользователя
+        :param answer_options: - словарь с вариантами ответов
+        :return: - ключ словаря, соответствующий ответу пользователя
         """
         answer = ""
         while not self.check_answer(answer, answer_options):
@@ -115,10 +112,10 @@ class MenuHandler:
 
     def top_10(self, data: list) -> list:
         """
-        Метод вывода ТОП-10 вакансий.
+        Метод вывода ТОП-10 вакансий. Работает с классом 'Vacancy'
         Если общее количество вакансий меньше 10, то выводит все
-        :param data: список данных с вакансиями (список словарей)
-        :return: список со словарями ТОП-10 вакансий
+        :param data: - список данных с вакансиями (список словарей)
+        :return: - список со словарями ТОП-10 вакансий
         """
         try:
             vac_obj_lst = []
@@ -143,7 +140,7 @@ class MenuHandler:
                       f"зарплата: {i.data['salary']} "
                       f"{i.data['currency']}")
 
-            # Формирования выходного списка (если придется сохранять в файл)
+            # Формирования выходного списка (для сохранения в файл)
             out_list = []
             for obj in top_list:
                 out_list.append(obj.data)
@@ -155,9 +152,9 @@ class MenuHandler:
     def search_handler(self, data_list: list, search_query: str) -> list:
         """
         Метод поиска в списке данных по запросу
-        :param data_list: список данных, в котором производится поиск
-        :param search_query: строка для поиска в списке
-        :return: список с элементами, удовлетворяющими запросу
+        :param data_list: - список данных, в котором производится поиск
+        :param search_query: - строка для поиска в списке
+        :return: - список с элементами, удовлетворяющими запросу
         """
         out_list = []
         for dic_i in data_list:
@@ -165,10 +162,12 @@ class MenuHandler:
                 if search_query.lower() in dic_i[key].lower():
                     out_list.append(dic_i)
                     break
-
         return out_list
 
     def menu_three_handler(self):
+        """
+        Метод обработки menu_3
+        """
         while True:
             self.out_question("Сделайте выбор", self.menu_3)
             self.answer = self.question_handler(self.menu_3)
@@ -207,12 +206,14 @@ class MenuHandler:
                 self.output_on_display(self.vacancy)
                 input("Для удаления нажмите любую клавишу")
                 self.data_file.del_vacancy(search_query)
-                print(search_query)
             else:
                 self.vacancy = self.data_file.get_vacancy()
                 self.output_on_display(self.vacancy)
 
     def menu_two_handler(self):
+        """
+        Метод обработки menu_2
+        """
         while True:
             self.out_question("Сделайте выбор", self.menu_2)
             self.answer = self.question_handler(self.menu_2)
@@ -257,6 +258,9 @@ class MenuHandler:
                 self.menu_three_handler()
 
     def menu_one_handler(self):
+        """
+        Метод обработки menu_1 - основного меню программы
+        """
         while True:
             self.out_question("Сделайте выбор", self.menu_1)
             self.answer = self.question_handler(self.menu_1)
