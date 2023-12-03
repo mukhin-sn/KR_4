@@ -59,7 +59,7 @@ class SuperJobAPI(APIHandler):
             list_vacancy.extend(requests.get(self.host, headers=self.head, params=params).json()["objects"])
 
         for vac in list_vacancy:
-            # определяем максимальную величина заработной платы, предлагаемой по ваканси
+            # определяем максимальную величину заработной платы, предлагаемой по вакансии
             # :param sal: максимальна величина заработной платы, предлагаемой по вакансии
             sal = str(max(vac['payment_from'], vac['payment_to']))
 
@@ -143,46 +143,3 @@ class HHruAPI(APIHandler):
                 out_list_vacancy.append(vac_dict)
 
         return out_list_vacancy
-
-
-#####################################################################################################################
-# obj_1 = SuperJobAPI()
-# obj_2 = HHruAPI()
-
-# print(obj_1)
-# print(obj_2)
-#
-# lst_vacancy = obj_1.api_handler("Python", "Санкт-Петербург")
-# print(len(lst_vacancy))
-# print(lst_vacancy)
-# for i in lst_vacancy:
-#     print(f'{i["description"]}, {i["url"]}')
-# print(lst_vacancy[40])
-# print(len(lst_vacancy["objects"]))
-
-# for i in lst_vacancy:
-#     print(i)
-#
-# print("-" * 50)
-# filename_ = 'json_data.json'
-# json_data = JSONSaver(filename_)
-#
-# json_data.add_vacancy(lst_vacancy)
-# dat = json_data.get_vacancy("аналитик")
-# for i in dat:
-#     print(i)
-
-# for i in lst_vacancy:
-#     # print(i["name"])
-#     if i['salary'] is None:
-#         salary = "зарплата: XXX"
-#     else:
-#         salary = f"зарплата: от {i['salary']['from']} до {i['salary']['to']})"
-#     print(i)
-#     print(f"id: {i['id']}, "
-#           f"название: {i['name']}, "
-#           f"город: {i['area']['name']}, "
-#           f"профессия: {i['professional_roles'][0]['name']}, "
-#           f"{salary}")
-#     print('-' * 50)
-# print(lst_vacancy[10])
