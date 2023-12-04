@@ -228,17 +228,19 @@ class MenuHandler:
                 if answer_two == "1":
                     self.out_message("Введите название города для поиска вакансий")
                     self.city_vacancy = self.input_answer()
-                    self.out_message("Пожалуйста подождите.\nОбработка запроса займет некоторое время")
-                    if self.answer == "1":
-                        self.vacancy = self.hh_api.api_handler(vac_name, self.city_vacancy)
-                        self.output_on_display(self.vacancy)
-                    elif self.answer == "2":
-                        self.vacancy = self.sj_api.api_handler(vac_name, self.city_vacancy)
-                        self.output_on_display(self.vacancy)
-                    else:
-                        self.vacancy = self.hh_api.api_handler(vac_name, self.city_vacancy)
-                        self.vacancy.extend(self.sj_api.api_handler(vac_name, self.city_vacancy))
-                        self.output_on_display(self.vacancy)
+
+                self.out_message("Пожалуйста подождите.\nОбработка запроса займет некоторое время")
+
+                if self.answer == "1":
+                    self.vacancy = self.hh_api.api_handler(vac_name, self.city_vacancy)
+                    self.output_on_display(self.vacancy)
+                elif self.answer == "2":
+                    self.vacancy = self.sj_api.api_handler(vac_name, self.city_vacancy)
+                    self.output_on_display(self.vacancy)
+                else:
+                    self.vacancy = self.hh_api.api_handler(vac_name, self.city_vacancy)
+                    self.vacancy.extend(self.sj_api.api_handler(vac_name, self.city_vacancy))
+                    self.output_on_display(self.vacancy)
             elif self.answer == "4":
                 self.vacancy = []
                 continue
